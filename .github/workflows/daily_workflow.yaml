@@ -1,0 +1,27 @@
+name: Daily Script Runner
+
+on:
+  schedule:
+    - cron: '30 5 * * *'  # Every day at 5:30 AM UTC
+  workflow_dispatch:       # Allows manual run
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        # or pip install pandas yfinance if you don’t use a requirements file
+
+    - name: Run your script
+      run: python tracker.ipynb
