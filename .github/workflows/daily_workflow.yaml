@@ -24,12 +24,12 @@ jobs:
         pip install -r requirements.txt
         # or pip install pandas yfinance if you don’t use a requirements file
 
-    - name: Convert notebook to script
-      run: |
-        pip install nbconvert
-        jupyter nbconvert --to script tracker.ipynb
+    # - name: Convert notebook to script
+    #   run: |
+    #     pip install nbconvert
+    #     jupyter nbconvert --to script tracker.ipynb
 
 
     - name: Run converted script
-      run: python tracker.py
+      run: python stock-tracker\src\tracker.py
 
