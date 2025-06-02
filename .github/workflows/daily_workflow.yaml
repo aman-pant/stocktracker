@@ -20,6 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
         # or pip install pandas yfinance if you don’t use a requirements file
 

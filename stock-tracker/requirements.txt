@@ -1,0 +1,93 @@
+import json
+import os
+from datetime import datetime
+
+class Tracker:
+    def __init__(self, filename='tracker.json'):
+        self.filename = filename
+        self.load_data()
+
+    def load_data(self):
+        """Load data from the JSON file."""
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as file:
+                self.data = json.load(file)
+        else:
+            self.data = {'tasks': []}
+
+    def save_data(self):
+        """Save data to the JSON file."""
+        with open(self.filename, 'w') as file:
+            json.dump(self.data, file, indent=4)
+
+    def add_task(self, task):
+        """Add a new task to the tracker."""
+        self.data['tasks'].append({
+            'task': task,
+            'created_at': datetime.now().isoformat(),
+            'completed': False
+        })
+        self.save_data()
+        print(f'Task "{task}" added.')
+
+    def complete_task(self, task_index):
+        """Mark a task as completed."""
+        try:
+            self.data['tasks'][task_index]['completed'] = True
+            self.save_data()
+            print(f'Task "{self.data["tasks"][task_index]["task"]}" marked as completed.')
+        except IndexError:
+            print("Task index out of range.")
+
+    def list_tasks(self):
+        """List all tasks."""
+        if not self.data['tasks']:
+            print("No tasks found.")
+            return
+        for index, task in enumerate(self.data['tasks']):
+            status = '✓' if task['completed'] else '✗'
+            print(f"{index}: [{status}] {task['task']} (Created at: {task['created_at']})")
+
+    def delete_task(self, task_index):
+        """Delete a task from the tracker."""
+        try:
+            removed_task = self.data['tasks'].pop(task_index)
+            self.save_data()
+            print(f'Task "{removed_task["task"]}" deleted.')
+        except IndexError:
+            print("Task index out of range.")
+
+def main():
+    tracker = Tracker()
+
+    while True:
+        print("\nOptions:")
+        print("1. Add Task")
+        print("2. Complete Task")
+        print("3. List Tasks")
+        print("4. Delete Task")
+        print("5. Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == '1':
+            task = input("Enter the task: ")
+            tracker.add_task(task)
+        elif choice == '2':
+            tracker.list_tasks()
+            task_index = int(input("Enter the task index to complete: "))
+            tracker.complete_task(task_index)
+        elif choice == '3':
+            tracker.list_tasks()
+        elif choice == '4':
+            tracker.list_tasks()
+            task_index = int(input("Enter the task index to delete: "))
+            tracker.delete_task(task_index)
+        elif choice == '5':
+            print("Exiting tracker.")
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+if __name__ == "__main__":
+    main()
