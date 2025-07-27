@@ -2,7 +2,7 @@ name: Daily Script Runner
 
 on:
   schedule:
-    - cron: '30 5 * * *'  # Every day at 5:30 AM UTC
+    - cron: ''  # Every day at 5:30 AM UTC
   workflow_dispatch:       # Allows manual run
 
 jobs:
